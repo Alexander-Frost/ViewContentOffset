@@ -72,7 +72,7 @@ extension ViewController: UIScrollViewDelegate {
         percentViewMovedOnVisibleScreen = max(min(percentViewMovedOnVisibleScreen, maxValue), minValue)
         
         // RETURN value between 0 and 1
-        print("HERE x: ", scrollView.contentOffset.x, percentViewMovedOnVisibleScreen)
+        print("HERE x: ", percentViewMovedOnVisibleScreen)
     }
 }
 
