@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     // MARK: - Properties
     
     private var items: [UIView] = []
+    private let colors: [UIColor] = [.systemBlue, .systemOrange, .cyan, .magenta]
     
     // MARK: - Outlets
     
@@ -27,9 +28,10 @@ class ViewController: UIViewController {
     // MARK: - Setup UI
     
     private func setupUI() {
-        for i in 0...3 {
+        for i in 0...8 {
             let tabView = UIView()
             tabView.tag = i
+            tabView.backgroundColor = colors.itemAt(i % colors.count)
             items.append(tabView)
         }
         
@@ -53,26 +55,22 @@ class ViewController: UIViewController {
         let x: CGFloat = horizontalSpacing * CGFloat(tabView.tag)
         tabView.frame = CGRect(x: x, y: 0, width: 150, height: 400)
         tabView.center.y = scrollView.center.y
-        tabView.backgroundColor = .orange
         scrollView.addSubview(tabView)
     }
 }
 
 extension ViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        items.forEach { (tabView) in
+        items.enumerated().forEach { (index, tabView) in
             let screenWidth = UIScreen.main.bounds.width
             
-            // This should return a value between 0 and 1
+            // This returns a value between 0 and 1 depending on the location of the tab view within the visible screen
             let xOffset = scrollView.convert(CGPoint(x: tabView.frame.minX, y: 0), to: view).x
-            var percentViewMovedOnVisibleScreen: CGFloat = xOffset / screenWidth
+            let percentViewMovedOnVisibleScreen: CGFloat = xOffset / screenWidth
             
-            let minValue: CGFloat = 0.6
-            let maxValue: CGFloat = 1
-            percentViewMovedOnVisibleScreen =  minValue + (maxValue - minValue) * percentViewMovedOnVisibleScreen
-            
-            let scaleSize = CGAffineTransform(scaleX: percentViewMovedOnVisibleScreen, y: percentViewMovedOnVisibleScreen)
-            tabView.transform = scaleSize
+            // Spacing - NOT CORRECT
+            let someSpacingAmount: CGFloat = 80
+            tabView.frame.origin.x = CGFloat(index) * percentViewMovedOnVisibleScreen * someSpacingAmount
         }
     }
 }
