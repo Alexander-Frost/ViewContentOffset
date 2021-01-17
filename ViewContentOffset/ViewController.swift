@@ -60,19 +60,31 @@ class ViewController: UIViewController {
 
 extension ViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let firstScrollviewView = items.first else {return}
-        let screenWidth = UIScreen.main.bounds.width
-        
-        // This should return a value between 0 and 1
-        let xOffset = firstScrollviewView.convert(CGPoint(x: firstScrollviewView.frame.minX, y: 0), to: view).x
-        var percentViewMovedOnVisibleScreen: CGFloat = xOffset / screenWidth
-        
-        let minValue: CGFloat = 0
-        let maxValue: CGFloat = 1
-        percentViewMovedOnVisibleScreen = max(min(percentViewMovedOnVisibleScreen, maxValue), minValue)
-        
-        // RETURN value between 0 and 1
-        print("HERE x: ", percentViewMovedOnVisibleScreen)
+        items.forEach { (tabView) in
+            let screenWidth = UIScreen.main.bounds.width
+            
+            // This should return a value between 0 and 1
+            let xOffset = scrollView.convert(CGPoint(x: tabView.frame.minX, y: 0), to: view).x
+            var percentViewMovedOnVisibleScreen: CGFloat = xOffset / screenWidth
+            
+            let minValue: CGFloat = 0.6
+            let maxValue: CGFloat = 1
+            percentViewMovedOnVisibleScreen =  minValue + (maxValue - minValue) * percentViewMovedOnVisibleScreen
+            
+            let scaleSize = CGAffineTransform(scaleX: percentViewMovedOnVisibleScreen, y: percentViewMovedOnVisibleScreen)
+            tabView.transform = scaleSize
+        }
     }
 }
 
+extension Array {
+    /// Safe way to get item in an array without crashing app when going out of bounds
+    func itemAt(_ index: Int) -> Element? {
+        if self.indices.contains(index) {
+            return self[index]
+        } else {
+            return nil
+        }
+    }
+    
+}
