@@ -81,13 +81,13 @@ extension ViewController: UIScrollViewDelegate {
             // Set a max and min
             let percentAcrossScreen = max(min(distanceMoved / screenWidth, 1.0), 0)
             
-            // Spacing - NOT CORRECT
+            // Spacing
             if let prevTabView = items.itemAt(index - 1) {
                 // Rest of tabs
                 let constant: CGFloat = 100
                 let xFrame = prevTabView.frame.origin.x + (pow(percentAcrossScreen, 3) * constant)
                 tabView.frame.origin.x = max(xFrame, 0)
-                print("HERE power: ", index, percentAcrossScreen)
+                print("HERE percent moved across visible screen: ", index, percentAcrossScreen)
             } else {
                 // First tab
                 tabView.frame.origin.x = 20
