@@ -85,7 +85,7 @@ extension ViewController: UIScrollViewDelegate {
             if let prevTabView = items.itemAt(index - 1) {
                 // Rest of tabs
                 let constant: CGFloat = 100
-                let xFrame = prevTabView.frame.origin.x + (pow(percentAcrossScreen, 3) * constant)
+                let xFrame = prevTabView.frame.origin.x + (pow(percentAcrossScreen, 2) * constant)
                 tabView.frame.origin.x = max(xFrame, 0)
                 print("HERE percent moved across visible screen: ", index, percentAcrossScreen)
             } else {
